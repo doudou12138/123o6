@@ -1,4 +1,5 @@
 # ticketCube
+## 早期设计，与框架代码不同，已弃用
 - disign
 主要是存放设计的文档和与项目设计相关的文档:
   - adr(dir):(architecture decision record),主要记录对于结构设计的想法和讨论、以及分析得到结果的过程
