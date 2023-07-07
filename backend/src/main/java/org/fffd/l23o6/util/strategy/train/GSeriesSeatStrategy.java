@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.criteria.CriteriaBuilder;
 
 
 public class GSeriesSeatStrategy extends TrainSeatStrategy {
@@ -25,10 +24,10 @@ public class GSeriesSeatStrategy extends TrainSeatStrategy {
     }};
 
     private final Map<GSeriesSeatType, Integer> type_price = new HashMap<>(){{
-        put(GSeriesSeatType.BUSINESS_SEAT,60);
-        put(GSeriesSeatType.FIRST_CLASS_SEAT,40);
-        put(GSeriesSeatType.SECOND_CLASS_SEAT,25);
-        put(GSeriesSeatType.NO_SEAT,25);
+        put(GSeriesSeatType.BUSINESS_SEAT,140);
+        put(GSeriesSeatType.FIRST_CLASS_SEAT,100);
+        put(GSeriesSeatType.SECOND_CLASS_SEAT,75);
+        put(GSeriesSeatType.NO_SEAT,75);
     }};
 
 

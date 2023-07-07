@@ -40,7 +40,7 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     public List<TrainVO> listTrains(Long startStationId, Long endStationId, String date) {
-        // TODO:finished?
+        // TODO:finished
         // First, get all routes contains [startCity, endCity]
         List<RouteEntity> routeEntities = routeDao.findAll();
         List<Long> routeIds = new ArrayList<>();

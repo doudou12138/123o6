@@ -15,6 +15,8 @@
 曾玉琨负责完成UC1、UC2的相关概念类图、系统顺序图、状态图  
 汪天佑负责完成UC3、UC4、UC5的相关概念类图、系统顺序图、状态图  
 
+第一阶段概念类图：
+![第一阶段的概念类图](https://github.com/doudou12138/img/blob/20d06bc1938d0e2441de559a682b8fd9f8f1cf17/totalClassMap.jpg?raw=true)
 1. UC1个人信息的管理  
     - 概念类图
 ![个人信息管理用例的概念类图](https://github.com/doudou12138/img/blob/a34f03c03bf2d0f0f2c2fd3355ca963807bd6f7c/manageSelfInformaitonClassMap.png?raw=true "个人信息管理用例的概念类图")
@@ -27,13 +29,13 @@
 
 2. UC2根据条件查询车票
     - 概念类图
-![根据条件查询车票用例用例的概念类图](https://github.com/doudou12138/img/blob/a34f03c03bf2d0f0f2c2fd3355ca963807bd6f7c/selectTicketClassMap.jpg?raw=true "根据条件查询车票用例用例的概念类图")
-
+![根据条件查询车票用例用例的概念类图](https://github.com/doudou12138/img/blob/365d6e8073ce0a35905c4d1c826f2b9a3d11a727/selectTicketClassMap.jpg?raw=true "根据条件查询车票用例用例的概念类图")
+   
     - 系统顺序图:
-![根据条件查询车票用例的系统顺序图](https://github.com/doudou12138/img/blob/a34f03c03bf2d0f0f2c2fd3355ca963807bd6f7c/selectTicketSequenceMap.png?raw=true "根据条件查询车票用例的系统顺序图")
+![根据条件查询车票用例的系统顺序图](https://github.com/doudou12138/img/blob/365d6e8073ce0a35905c4d1c826f2b9a3d11a727/selectTicketSequenceMap.png?raw=true "根据条件查询车票用例的系统顺序图")
 
     - 系统状态图:
-![根据条件查询车票用例的系统状态图](https://github.com/doudou12138/img/blob/a34f03c03bf2d0f0f2c2fd3355ca963807bd6f7c/selectTicketSysStatueMap.jpg?raw=true "根据条件查询车票用例的系统状态图")
+![根据条件查询车票用例的系统状态图](https://github.com/doudou12138/img/blob/365d6e8073ce0a35905c4d1c826f2b9a3d11a727/selectTicketSysStatueMap.jpg?raw=true "根据条件查询车票用例的系统状态图")
 
 3. UC3购买车票：
     - 概念类图:

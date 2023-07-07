@@ -26,11 +26,11 @@ public class KSeriesSeatStrategy extends TrainSeatStrategy {
     }};
 
     private final Map<KSeriesSeatType,Integer> type_price = new HashMap<>(){{
-        put(KSeriesSeatType.SOFT_SLEEPER_SEAT,35);
-        put(KSeriesSeatType.HARD_SLEEPER_SEAT,25);
-        put(KSeriesSeatType.SOFT_SEAT,15);
-        put(KSeriesSeatType.HARD_SEAT,10);
-        put(KSeriesSeatType.NO_SEAT,8);
+        put(KSeriesSeatType.SOFT_SLEEPER_SEAT,100);
+        put(KSeriesSeatType.HARD_SLEEPER_SEAT,75);
+        put(KSeriesSeatType.SOFT_SEAT,50);
+        put(KSeriesSeatType.HARD_SEAT,40);
+        put(KSeriesSeatType.NO_SEAT,20);
     }};
 
     private KSeriesSeatStrategy() {
