@@ -170,9 +170,9 @@ public class OrderServiceImpl implements OrderService {
         }
 
         int integralSeq = checkIntegral(userDao.findByid(order.getUserId()).getIntegral());
-        // TODO: use payment strategy to pay!
+        // TODO: finished;use payment strategy to pay!
         boolean paied = AliPayStrategy.INSTANCE.pay(order.getPrice()*(1-discounts.get(integralSeq)));
-        // TODO: update user's integral, so that user can get discount next time
+        // TODO: finished;update user's integral, so that user can get discount next time
         if(paied){
             UserEntity userEntity = userDao.findByid(order.getUserId());
             userEntity.setIntegral(userEntity.getIntegral()-consume.get(integralSeq));

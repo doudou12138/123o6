@@ -8,8 +8,11 @@ public class AliPayStrategy extends PaymentStrategy{
         //扣费
         boolean success = true;
         if(success){
+            PaymentLogger.INSTANCE.logPayment(price);
             return true;
         }else{
+            String errorMessage = "";
+            PaymentLogger.INSTANCE.logPaymentFailure(price,errorMessage);
             return false;
         }
     }
