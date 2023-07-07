@@ -8,7 +8,7 @@ interface OrderDetailData {
   end_station_id: number,
   departure_time: string,
   arrival_time: string,
-  price:number
+  price:number,
 }
 
 interface TicketInfo {

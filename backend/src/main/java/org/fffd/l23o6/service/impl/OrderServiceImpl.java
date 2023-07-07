@@ -1,6 +1,7 @@
 package org.fffd.l23o6.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -149,7 +150,6 @@ public class OrderServiceImpl implements OrderService {
         TrainType trainType = trainEntity.getTrainType();
         if(trainType==TrainType.HIGH_SPEED){
             GSeriesSeatStrategy gSeriesSeatStrategy = GSeriesSeatStrategy.INSTANCE;
-            System.err.println("startRelease");
             gSeriesSeatStrategy.releaseSeat(startStationIndex,endStationIndex,order.getSeat(),trainEntity.getSeats());
         }else if(trainType == TrainType.NORMAL_SPEED){
             KSeriesSeatStrategy kSeriesSeatStrategy = KSeriesSeatStrategy.INSTANCE;
@@ -163,20 +163,27 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
-    public boolean payOrder(Long id) {
+    public boolean payOrder(Long id,boolean useIntegral) {
         OrderEntity order = orderDao.findById(id).get();
 
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
             throw new BizException(BizError.ILLEAGAL_ORDER_STATUS);
         }
 
-        int integralSeq = checkIntegral(userDao.findByid(order.getUserId()).getIntegral());
+        double discount=0;
+        int consIntegral=0;
+        if(useIntegral){
+            List<Double> disc_integ = calNewPrice(id,useIntegral);
+            discount = disc_integ.get(0);
+            consIntegral = (disc_integ.get(1)).intValue();
+        }
+
         // TODO: finished;use payment strategy to pay!
-        boolean paied = AliPayStrategy.INSTANCE.pay(order.getPrice()*(1-discounts.get(integralSeq)));
+        boolean paied = AliPayStrategy.INSTANCE.pay(order.getPrice()*(1-discount));
         // TODO: finished;update user's integral, so that user can get discount next time
         if(paied){
             UserEntity userEntity = userDao.findByid(order.getUserId());
-            userEntity.setIntegral(userEntity.getIntegral()-consume.get(integralSeq));
+            userEntity.setIntegral(userEntity.getIntegral()-consIntegral);
             userEntity.setIntegral(userEntity.getIntegral()+order.getPrice());
             order.setStatus(OrderStatus.COMPLETED);
             userEntity.setUpdatedAt(null);
@@ -199,6 +206,20 @@ public class OrderServiceImpl implements OrderService {
             return down_bound.size()-1;
         }
         return -1;
+    }
+
+    public List<Double> calNewPrice(Long orderId,boolean useIntegral){
+        OrderEntity order = orderDao.findById(orderId).get();
+
+        double discount = 0;
+        int consIntegral = 0;
+        if(useIntegral) {
+            int integralSeq = checkIntegral(userDao.findByid(order.getUserId()).getIntegral());
+            discount = discounts.get(integralSeq);
+            consIntegral = consume.get(integralSeq);
+        }
+
+        return Arrays.asList(discount,consIntegral*1.0);
     }
 
 }

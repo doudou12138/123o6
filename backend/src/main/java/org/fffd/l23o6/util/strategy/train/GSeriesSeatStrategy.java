@@ -139,7 +139,6 @@ public class GSeriesSeatStrategy extends TrainSeatStrategy {
             for(Integer sequence:seat_map.keySet()){
                 if(seat_map.get(sequence).equals(seat)){
                     sequ = sequence;
-                    System.err.println(sequ);
                 }
             }
         }

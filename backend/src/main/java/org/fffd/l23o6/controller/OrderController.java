@@ -41,13 +41,13 @@ public class OrderController {
         return CommonResponse.success(orderService.getOrder(orderId));
     }
 
-    @PatchMapping("order/{orderId}")
-    public CommonResponse<?> patchOrder(@PathVariable("orderId") Long orderId, @Valid @RequestBody PatchOrderRequest request) {
+    @PatchMapping("order/{orderId}/{isChecked}")
+    public CommonResponse<?> patchOrder(@PathVariable("orderId") Long orderId, @PathVariable("isChecked") boolean isChecked,@Valid @RequestBody PatchOrderRequest request) {
 
         boolean success = true;
         switch (request.getStatus()) {
             case PAID:
-                success = orderService.payOrder(orderId);
+                success = orderService.payOrder(orderId,isChecked);
                 break;
             case CANCELLED:
                 success = orderService.cancelOrder(orderId);
@@ -60,5 +60,10 @@ public class OrderController {
         }
 
         return CommonResponse.success();
+    }
+
+    @GetMapping("order/calPrice")
+    public CommonResponse<List<Double>> calPriceByDiscount(Long orderId,boolean isChecked){
+        return CommonResponse.success(orderService.calNewPrice(orderId,isChecked));
     }
 }

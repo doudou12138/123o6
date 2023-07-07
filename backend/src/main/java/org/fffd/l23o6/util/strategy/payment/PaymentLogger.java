@@ -24,7 +24,7 @@ public class PaymentLogger {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timestamp = now.format(formatter);
-        return timestamp + " - Payment logged - "+ " Amount: " + amount + "RMB";
+        return timestamp + " - Payment logged - "+ " Amount: " + amount + " RMB";
     }
 
 

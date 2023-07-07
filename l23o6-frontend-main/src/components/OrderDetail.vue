@@ -30,9 +30,14 @@ let orderDetail = reactive<{ data: OrderDetailData }>({
   },
 })
 
+
 let train = reactive<{ data: { name?: string } }>({
   data: {}
 });
+
+let discount=0;
+let isChecked=false;
+let integral = 0;
 
 const getOrderDetail = () => {
   request({
@@ -75,13 +80,13 @@ const getTrain = () => {
 }
 
 
-const pay = (id: number) => {
+const pay = (orderId: number) => {
   request({
-    url: `/order/${id}`,
+    url: `/order/${orderId}/${isChecked}`,
     method: 'PATCH',
     data: {
-      status: '已支付'
-    }
+      status: '已支付',
+    },
   }).then((res) => {
     ElNotification({
       offset: 70,
@@ -103,12 +108,39 @@ const pay = (id: number) => {
   })
 }
 
+const calDiscount = (id:number,isChecked:boolean)=> {
+    if (isChecked) {
+        request({
+            url: `/order/calPrice`,
+            method: "GET",
+            params: {
+                orderId: id,
+                isChecked: isChecked
+            }
+        })
+        .then((res) => {
+            // 处理请求成功的响应
+            discount = res.data.data[0];
+            integral = res.data.data[1];
+            getOrderDetail();
+            // 在这里使用 price_integ 进行后续操作
+        }).catch((error) => {
+            // 处理请求失败的情况
+            console.error(error);
+        });
+    }else{
+        discount=0;
+        integral = 0;
+        getOrderDetail();
+    }
+}
+
 const cancel = (id: number) => {
-  request({
-    url: `/order/${id}`,
+    request({
+    url: `/order/${id}/${isChecked}`,
     method: 'PATCH',
     data: {
-      status: '已取消'
+      status: '已取消',
     }
   }).then((res) => {
     ElNotification({
@@ -130,6 +162,9 @@ const cancel = (id: number) => {
     console.log(error)
   })
 }
+
+
+
 
 watch(orderDetail, () => {
   getTrain()
@@ -212,17 +247,24 @@ getOrderDetail()
       <el-descriptions-item label="到达时间" :span="2" width="25%" align="center" v-if="orderDetail.data">
         {{ parseDate(orderDetail.data.arrival_time) }}
       </el-descriptions-item>
-        <el-descriptions-item label="价格" :span="2" width="25%" align="center" v-if="orderDetail.data">
-            {{ orderDetail.data.price }}
+      <el-descriptions-item label="价格" :span="2" width="25%" align="center" v-if="orderDetail.data">
+            {{ orderDetail.data.price*(1-discount)}}
         </el-descriptions-item>
-    </el-descriptions>
+      </el-descriptions>
+
 
     <div style="margin-top: 2vh" v-if="orderDetail.data && orderDetail.data.status === '等待支付'">
+      <div>
+          <el-checkbox v-model="isChecked" @change=calDiscount(orderDetail.data.id,isChecked)>使用积分</el-checkbox>
+          <br/>
+          <span v-if="isChecked">所需积分: {{ integral }}</span>
+          <br/>
+      </div>
       <div style="float:right;">
-        <el-button type="danger" @click="cancel(id ?? -1)">
+        <el-button type="danger" @click="cancel(orderDetail.data.id ?? -1)">
           取消订单
         </el-button>
-        <el-button type="primary" @click="pay(id ?? -1)">
+        <el-button type="primary" @click="pay(orderDetail.data.id ?? -1)">
           支付订单
         </el-button>
       </div>

@@ -13,4 +13,5 @@ public class PatchOrderRequest {
     @Schema(description = "订单状态", required = true)
     @NotNull
     private OrderStatus status;
+
 }
