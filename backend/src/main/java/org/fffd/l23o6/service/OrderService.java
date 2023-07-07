@@ -9,6 +9,6 @@ public interface OrderService {
     List<OrderVO> listOrders(String username);
     OrderVO getOrder(Long id);
 
-    void cancelOrder(Long id);
-    void payOrder(Long id);
+    boolean cancelOrder(Long id);
+    boolean payOrder(Long id);
 }

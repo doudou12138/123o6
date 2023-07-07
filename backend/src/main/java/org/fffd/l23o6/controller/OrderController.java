@@ -44,15 +44,19 @@ public class OrderController {
     @PatchMapping("order/{orderId}")
     public CommonResponse<?> patchOrder(@PathVariable("orderId") Long orderId, @Valid @RequestBody PatchOrderRequest request) {
 
+        boolean success = true;
         switch (request.getStatus()) {
             case PAID:
-                orderService.payOrder(orderId);
+                success = orderService.payOrder(orderId);
                 break;
             case CANCELLED:
-                orderService.cancelOrder(orderId);
+                success = orderService.cancelOrder(orderId);
                 break;
             default:
                 throw new BizException(CommonErrorType.ILLEGAL_ARGUMENTS, "Invalid order status.");
+        }
+        if(!success){
+            throw new BizException(CommonErrorType.ILLEGAL_ARGUMENTS, "pay fail");
         }
 
         return CommonResponse.success();

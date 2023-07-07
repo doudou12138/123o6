@@ -16,7 +16,7 @@ public class PaymentLogger {
     }
 
     public void logPaymentFailure(double amount, String errorMessage) {
-        String logMessage = getLogMessage(amount)+"error"+errorMessage;
+        String logMessage = getLogMessage(amount)+" error "+errorMessage;
         writeLogToFile(logMessage);
     }
 
@@ -24,7 +24,7 @@ public class PaymentLogger {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String timestamp = now.format(formatter);
-        return timestamp + " - Payment logged - "+ " Amount: " + amount;
+        return timestamp + " - Payment logged - "+ " Amount: " + amount + "RMB";
     }
 
 

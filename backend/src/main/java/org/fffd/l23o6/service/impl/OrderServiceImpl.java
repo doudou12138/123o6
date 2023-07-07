@@ -132,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    public void cancelOrder(Long id) {
+    public boolean cancelOrder(Long id) {
         OrderEntity order = orderDao.findById(id).get();
 
         if (order.getStatus() == OrderStatus.COMPLETED || order.getStatus() == OrderStatus.CANCELLED) {
@@ -160,9 +160,10 @@ public class OrderServiceImpl implements OrderService {
         trainEntity.setUpdatedAt(null);
         trainDao.save(trainEntity);
         orderDao.save(order);
+        return true;
     }
 
-    public void payOrder(Long id) {
+    public boolean payOrder(Long id) {
         OrderEntity order = orderDao.findById(id).get();
 
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
@@ -181,8 +182,11 @@ public class OrderServiceImpl implements OrderService {
             userEntity.setUpdatedAt(null);
             userDao.save(userEntity);
             orderDao.save(order);
+        }else{
+
         }
 
+        return paied;
     }
 
     public int checkIntegral(long integral){
