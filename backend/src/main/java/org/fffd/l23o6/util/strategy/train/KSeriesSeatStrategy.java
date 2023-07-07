@@ -135,4 +135,30 @@ public class KSeriesSeatStrategy extends TrainSeatStrategy {
     public int getPrice(KSeriesSeatType type){
         return type_price.get(type);
     }
+
+    public void releaseSeat(int startStationIndex,int endStationIndex,String seat,boolean[][] seats){
+        int sequ = -1;
+        for(Map<Integer,String> seat_map:Arrays.asList(HARD_SLEEPER_SEAT_MAP,SOFT_SLEEPER_SEAT_MAP,SOFT_SEAT_MAP,HARD_SEAT_MAP
+        ,NO_SEAT_MAP)){
+            for(Integer sequence:seat_map.keySet()){
+                if(seat_map.get(sequence).equals(seat)){
+                    sequ = sequence;
+                }
+            }
+        }
+
+        if(sequ!=-1){
+            for(int i=startStationIndex;i<endStationIndex;++i){
+                if(seats[i][sequ]){
+                    seats[i][sequ]=false;
+                }else{
+                    System.err.println("error");
+                }
+            }
+        }else{
+            System.err.println("error");
+        }
+
+
+    }
 }

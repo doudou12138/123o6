@@ -2,7 +2,6 @@ package org.fffd.l23o6.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.fffd.l23o6.dao.OrderDao;
@@ -18,7 +17,6 @@ import org.fffd.l23o6.pojo.entity.TrainEntity;
 import org.fffd.l23o6.pojo.enum_.TrainType;
 import org.fffd.l23o6.pojo.vo.order.OrderVO;
 import org.fffd.l23o6.service.OrderService;
-import org.fffd.l23o6.service.UserService;
 import org.fffd.l23o6.util.strategy.payment.AliPayStrategy;
 import org.fffd.l23o6.util.strategy.train.GSeriesSeatStrategy;
 import org.fffd.l23o6.util.strategy.train.KSeriesSeatStrategy;
@@ -143,14 +141,24 @@ public class OrderServiceImpl implements OrderService {
 
         // TODO: cancel is not return,not refund user's money and credits if needed
         //just release the seat
-        //AliPayStrategy.INSTANCE.refund(1);
-        TrainType trainType = trainDao.findById(order.getTrainId()).get().getTrainType();
+        TrainEntity trainEntity = trainDao.findById(order.getTrainId()).get();
+        RouteEntity route = routeDao.findById(trainEntity.getRouteId()).get();
+        int startStationIndex = route.getStationIds().indexOf(order.getDepartureStationId());
+        int endStationIndex = route.getStationIds().indexOf(order.getArrivalStationId());
+
+        TrainType trainType = trainEntity.getTrainType();
         if(trainType==TrainType.HIGH_SPEED){
             GSeriesSeatStrategy gSeriesSeatStrategy = GSeriesSeatStrategy.INSTANCE;
-
+            System.err.println("startRelease");
+            gSeriesSeatStrategy.releaseSeat(startStationIndex,endStationIndex,order.getSeat(),trainEntity.getSeats());
+        }else if(trainType == TrainType.NORMAL_SPEED){
+            KSeriesSeatStrategy kSeriesSeatStrategy = KSeriesSeatStrategy.INSTANCE;
+            kSeriesSeatStrategy.releaseSeat(startStationIndex,endStationIndex,order.getSeat(),trainEntity.getSeats());
         }
 
         order.setStatus(OrderStatus.CANCELLED);
+        trainEntity.setUpdatedAt(null);
+        trainDao.save(trainEntity);
         orderDao.save(order);
     }
 
@@ -161,7 +169,7 @@ public class OrderServiceImpl implements OrderService {
             throw new BizException(BizError.ILLEAGAL_ORDER_STATUS);
         }
 
-        int integralSeq = checkIntegral(order.getPrice(),userDao.findByid(order.getUserId()).getIntegral());
+        int integralSeq = checkIntegral(userDao.findByid(order.getUserId()).getIntegral());
         // TODO: use payment strategy to pay!
         boolean paied = AliPayStrategy.INSTANCE.pay(order.getPrice()*(1-discounts.get(integralSeq)));
         // TODO: update user's integral, so that user can get discount next time
@@ -170,12 +178,14 @@ public class OrderServiceImpl implements OrderService {
             userEntity.setIntegral(userEntity.getIntegral()-consume.get(integralSeq));
             userEntity.setIntegral(userEntity.getIntegral()+order.getPrice());
             order.setStatus(OrderStatus.COMPLETED);
+            userEntity.setUpdatedAt(null);
+            userDao.save(userEntity);
             orderDao.save(order);
         }
 
     }
 
-    public int checkIntegral(double price, long integral){
+    public int checkIntegral(long integral){
         for(int i=0;i<down_bound.size()-1;++i){
             if(integral>=down_bound.get(i)&&integral<down_bound.get(i+1)){
                 return i;
