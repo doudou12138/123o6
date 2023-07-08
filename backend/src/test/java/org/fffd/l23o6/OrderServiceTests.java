@@ -50,13 +50,16 @@ public class OrderServiceTests {
         Assertions.assertEquals(0, orderService.checkIntegral(0));  // 应返回 0
         Assertions.assertEquals(0, orderService.checkIntegral(999));  // 应返回 0
         Assertions.assertEquals(1, orderService.checkIntegral(1000));  // 应返回 1
-        Assertions.assertEquals(1, orderService.checkIntegral(2999));  // 应返回 1
-        Assertions.assertEquals(2, orderService.checkIntegral(3000));  // 应返回 2
-        Assertions.assertEquals(2, orderService.checkIntegral(9999));  // 应返回 2
-        Assertions.assertEquals(3, orderService.checkIntegral(10000));  // 应返回 3
-        Assertions.assertEquals(3, orderService.checkIntegral(49999));  // 应返回 3
-        Assertions.assertEquals(4, orderService.checkIntegral(50000));  // 应返回 4
-        Assertions.assertEquals(4, orderService.checkIntegral(50001));  // 应返回 -1
+        Assertions.assertEquals(1, orderService.checkIntegral(1999));  // 应返回 1
+        Assertions.assertEquals(2, orderService.checkIntegral(2000));  // 应返回 2
+        Assertions.assertEquals(2, orderService.checkIntegral(6999));  // 应返回 2
+        Assertions.assertEquals(3, orderService.checkIntegral(7000));  // 应返回 3
+        Assertions.assertEquals(3, orderService.checkIntegral(39999));  // 应返回 3
+        Assertions.assertEquals(4, orderService.checkIntegral(40000));  // 应返回 4
+        Assertions.assertEquals(4, orderService.checkIntegral(49999));  // 应返回 5
+        Assertions.assertEquals(5, orderService.checkIntegral(50000));  // 应返回 5
+        Assertions.assertEquals(5, orderService.checkIntegral(50001));  // 应返回 5
+
     }
 
     @Test
