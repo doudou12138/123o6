@@ -19,6 +19,8 @@ import org.fffd.l23o6.pojo.enum_.TrainType;
 import org.fffd.l23o6.pojo.vo.order.OrderVO;
 import org.fffd.l23o6.service.OrderService;
 import org.fffd.l23o6.util.strategy.payment.AliPayStrategy;
+import org.fffd.l23o6.util.strategy.payment.PaymentStrategy;
+import org.fffd.l23o6.util.strategy.payment.WeChatPayStrategy;
 import org.fffd.l23o6.util.strategy.train.GSeriesSeatStrategy;
 import org.fffd.l23o6.util.strategy.train.KSeriesSeatStrategy;
 import org.springframework.stereotype.Service;
@@ -37,8 +39,9 @@ public class OrderServiceImpl implements OrderService {
     private static final List<Integer> down_bound=new ArrayList<>(){{
         add(0);
         add(1000);
-        add(3000);
-        add(10000);
+        add(2000);
+        add(7000);
+        add(40000);
         add(50000);
     }};
     private static final List<Integer> consume = new ArrayList<>(){{
@@ -163,7 +166,7 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
-    public boolean payOrder(Long id,boolean useIntegral) {
+    public boolean payOrder(Long id,boolean useIntegral,boolean payWay) {
         OrderEntity order = orderDao.findById(id).get();
 
         if (order.getStatus() != OrderStatus.PENDING_PAYMENT) {
@@ -178,8 +181,9 @@ public class OrderServiceImpl implements OrderService {
             consIntegral = (disc_integ.get(1)).intValue();
         }
 
+        PaymentStrategy paymentStrategy = payWay? WeChatPayStrategy.INSTANCE :AliPayStrategy.INSTANCE;
         // TODO: finished;use payment strategy to pay!
-        boolean paied = AliPayStrategy.INSTANCE.pay(order.getPrice()*(1-discount));
+        boolean paied = paymentStrategy.pay(order.getPrice()*(1-discount));
         // TODO: finished;update user's integral, so that user can get discount next time
         if(paied){
             UserEntity userEntity = userDao.findByid(order.getUserId());
@@ -222,4 +226,7 @@ public class OrderServiceImpl implements OrderService {
         return Arrays.asList(discount,consIntegral*1.0);
     }
 
+    public List<Integer> getDownBound() {
+        return down_bound;
+    }
 }

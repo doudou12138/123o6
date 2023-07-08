@@ -39,6 +39,9 @@ let discount=0;
 let isChecked=false;
 let integral = 0;
 
+let paymentMethod: false; // 存储选择的支付方
+let paymentMethods: string[] = ['alipay', 'wechatPay']; // 支付方式选项数组
+
 const getOrderDetail = () => {
   request({
     url: `/order/${props.id}`,
@@ -82,7 +85,7 @@ const getTrain = () => {
 
 const pay = (orderId: number) => {
   request({
-    url: `/order/${orderId}/${isChecked}`,
+    url: `/order/${orderId}/${isChecked}/${paymentMethod}`,
     method: 'PATCH',
     data: {
       status: '已支付',
@@ -256,11 +259,18 @@ getOrderDetail()
     <div style="margin-top: 2vh" v-if="orderDetail.data && orderDetail.data.status === '等待支付'">
       <div>
           <el-checkbox v-model="isChecked" @change=calDiscount(orderDetail.data.id,isChecked)>使用积分</el-checkbox>
+          <el-select v-model="paymentMethod" style="float: right" @change="getOrderDetail">
+              <el-option v-for="method in paymentMethods" :key="method" :label="method" :value="method !== 'alipay'"/>
+          </el-select>
           <br/>
-          <span v-if="isChecked">所需积分: {{ integral }}</span>
+          <span v-if="isChecked">所需积分: {{ integral }}
+
+          </span>
+
           <br/>
       </div>
-      <div style="float:right;">
+
+        <div style="float:right;">
         <el-button type="danger" @click="cancel(orderDetail.data.id ?? -1)">
           取消订单
         </el-button>

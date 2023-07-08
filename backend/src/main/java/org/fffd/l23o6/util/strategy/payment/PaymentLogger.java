@@ -10,9 +10,9 @@ public class PaymentLogger {
     public static final PaymentLogger INSTANCE= new PaymentLogger();
     private static final String LOG_FILE_PATH = "payment.log";
 
-    public void logPayment( double amount) {
+    public void logPayment( double amount,String payWay) {
         String logMessage = getLogMessage(amount);
-        writeLogToFile(logMessage);
+        writeLogToFile(logMessage+" by "+payWay);
     }
 
     public void logPaymentFailure(double amount, String errorMessage) {

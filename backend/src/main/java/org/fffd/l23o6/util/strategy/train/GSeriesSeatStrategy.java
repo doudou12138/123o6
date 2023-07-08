@@ -156,4 +156,8 @@ public class GSeriesSeatStrategy extends TrainSeatStrategy {
         }
 
     }
+
+    public TrainSeatStrategy getInstance(){
+        return INSTANCE;
+    }
 }

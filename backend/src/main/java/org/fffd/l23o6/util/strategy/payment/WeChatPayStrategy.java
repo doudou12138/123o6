@@ -1,14 +1,14 @@
 package org.fffd.l23o6.util.strategy.payment;
 
-public class AliPayStrategy extends PaymentStrategy{
+public class WeChatPayStrategy extends PaymentStrategy{
 
-    public static final AliPayStrategy INSTANCE = new AliPayStrategy();
+    public static final WeChatPayStrategy INSTANCE = new WeChatPayStrategy();
 
     public boolean pay(double price){
         //扣费
         boolean success = true;
         if(success){
-            PaymentLogger.INSTANCE.logPayment(price,"AliPay");
+            PaymentLogger.INSTANCE.logPayment(price,"Wechat");
             return true;
         }else{
             String errorMessage = "";

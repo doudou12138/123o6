@@ -41,13 +41,13 @@ public class OrderController {
         return CommonResponse.success(orderService.getOrder(orderId));
     }
 
-    @PatchMapping("order/{orderId}/{isChecked}")
-    public CommonResponse<?> patchOrder(@PathVariable("orderId") Long orderId, @PathVariable("isChecked") boolean isChecked,@Valid @RequestBody PatchOrderRequest request) {
+    @PatchMapping("order/{orderId}/{isChecked}/{payWay}")
+    public CommonResponse<?> patchOrder(@PathVariable("orderId") Long orderId, @PathVariable("isChecked") boolean isChecked,@PathVariable("payWay") boolean payWay,@Valid @RequestBody PatchOrderRequest request) {
 
         boolean success = true;
         switch (request.getStatus()) {
             case PAID:
-                success = orderService.payOrder(orderId,isChecked);
+                success = orderService.payOrder(orderId,isChecked,payWay);
                 break;
             case CANCELLED:
                 success = orderService.cancelOrder(orderId);

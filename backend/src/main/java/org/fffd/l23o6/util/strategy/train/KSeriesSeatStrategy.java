@@ -94,7 +94,7 @@ public class KSeriesSeatStrategy extends TrainSeatStrategy {
             }
             if(able){
                 for(int i=startStationIndex;i<endStationIndex;++i){
-                    seatMap[i][num] = false;
+                    seatMap[i][num] = true;
                 }
                 return seat_map.get(num);
             }
@@ -158,7 +158,9 @@ public class KSeriesSeatStrategy extends TrainSeatStrategy {
         }else{
             System.err.println("error");
         }
+    }
 
-
+    public TrainSeatStrategy getInstance(){
+        return INSTANCE;
     }
 }

@@ -10,7 +10,7 @@ public interface OrderService {
     OrderVO getOrder(Long id);
 
     boolean cancelOrder(Long id);
-    boolean payOrder(Long id,boolean useIntegral);
+    boolean payOrder(Long id,boolean useIntegra,boolean payWay);
 
     List<Double> calNewPrice(Long orderId,boolean useIntegral);
 }
