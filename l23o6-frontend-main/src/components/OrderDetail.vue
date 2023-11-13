@@ -39,7 +39,7 @@ let discount=0;
 let isChecked=false;
 let integral = 0;
 
-let paymentMethod: false; // 存储选择的支付方
+let paymentMethod= false; // 存储选择的支付方
 let paymentMethods: string[] = ['alipay', 'wechatPay']; // 支付方式选项数组
 
 const getOrderDetail = () => {
@@ -140,7 +140,7 @@ const calDiscount = (id:number,isChecked:boolean)=> {
 
 const cancel = (id: number) => {
     request({
-    url: `/order/${id}/${isChecked}`,
+    url: `/order/${id}/${isChecked}/${paymentMethod}`,
     method: 'PATCH',
     data: {
       status: '已取消',
