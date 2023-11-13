@@ -27,7 +27,7 @@
 打jar包: 记得给x权限  
 测试报告整合到网页端:  借助junit框架(即在gradle中加入他的依赖),在./gradlew test时能够在build/test-result/test/下生成...xml文件.  
 gitlab追踪这个文件并单元测试报告整合到流水线中,效果如下:  
-![]()   
+![](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/showTestReport.png?raw=true)   
 对应的配置文件的修改:  
 ```yml
 unit-test-job:   # This job runs in the test stage.
@@ -50,7 +50,7 @@ unit-test-job:   # This job runs in the test stage.
 
 ### 2. 代码质量检测:
 效果如图:  
-![]()  
+![](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/detectCodeProblem.png?raw=true)  
 借助docker镜像完成,  
 ```yml
 ode-quality:   # This job also runs in the test stage.
@@ -139,9 +139,9 @@ ode-quality:   # This job also runs in the test stage.
 4. 静态代码安全检查和依赖检查  
 依旧是借助docker实现,  
 静态代码安全检查输出:  
-[图片]  
+![](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/staticSecurity.png?raw=true)  
 依赖检查效果:(licenses旁边的Secutiry就是静态安全检查给流水线上的效果)  
-[图片]  
+![图片](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/.png?raw=true)  
 对应的配置文件:  
 ```yml
 include:
@@ -173,7 +173,8 @@ deploy-job:      # This job runs in the deploy stage.
     - sshpass -p "${DEPLOY_SERVER_PASSWORD}" ssh -o StrictHostKeyChecking=no root@"${DEPLOY_SERVER_IP}" "killall java; screen -d -m java -jar l23o6-0.0.1-SNAPSHOT.jar"
     - echo "Application successfully deployed."
 ```
-
+另外,我们这里不在流水线配置文件中直接出现连接凭据,而是将ssh凭据放入gitlab的环境变量中. 
+![](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/gitlabVariables.png?raw=true)
 ## 网页端
 1. 构建  
 使用npm命令构建  
@@ -182,6 +183,8 @@ deploy-job:      # This job runs in the deploy stage.
 3. 代码自动格式化  
 上面所提到的操作均是代码提交后,在runner机器上进行的,并有可能反馈到gitlab流水线上.  
 而这一步发生在开发者自己的电脑上,目的是开发者提交自己电脑上的代码时,本地先完成代码自动格式化,保证传上去的代码格式是良好的.  
+效果:  
+![图片](https://github.com/doudou12138/img/blob/f5e260009785d82136a39ff748f7996094e7c4c9/homeworkReport/formatTerminal.png?raw=true)
 4. 静态安全检查和依赖检查  
 同服务端  
 5. 前端部署  
